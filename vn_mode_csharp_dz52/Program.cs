@@ -18,28 +18,33 @@ class Program
             new Prisoner("Кузнецов Дмитрий Иванович", "Антиправительственное")
         };
 
-        Console.WriteLine(BeforeAmnestyMessage);
+        DisplayPrisoners(BeforeAmnestyMessage, prisoners);
 
-        foreach (var prisoner in prisoners)
-        {
-            Console.WriteLine($"{prisoner.FullName} - {prisoner.Crime}");
-        }
+        prisoners = ExcludeAntigovernmentPrisoners(prisoners);
 
-        prisoners = prisoners.Where(p => p.Crime != "Антиправительственное").ToList();
+        DisplayPrisoners(AfterAmnestyMessage, prisoners);
+    }
 
-        Console.WriteLine(AfterAmnestyMessage);
+    static void DisplayPrisoners(string message, List<Prisoner> prisoners)
+    {
+        Console.WriteLine(message);
 
         foreach (var prisoner in prisoners)
         {
             Console.WriteLine($"{prisoner.FullName} - {prisoner.Crime}");
         }
     }
+
+    static List<Prisoner> ExcludeAntigovernmentPrisoners(List<Prisoner> prisoners)
+    {
+        return prisoners.Where(prisoner => prisoner.Crime != "Антиправительственное").ToList();
+    }
 }
 
 class Prisoner
 {
-    public string FullName { get; set; }
-    public string Crime { get; set; }
+    public string FullName { get; private set; }
+    public string Crime { get; private set; }
 
     public Prisoner(string fullName, string crime)
     {
